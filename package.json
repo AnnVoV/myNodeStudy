@@ -1,0 +1,14 @@
+{
+  "name": "NodeLab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "file.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ann",
+  "license": "ISC",
+  "devDependencies": {
+    "bl": "^0.9.4"
+  }
+}
