@@ -1,3 +1,4 @@
+<!--  -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,11 +30,11 @@
   <form action="/loginHandler" method="post" name="loginForm">
     <div>
       <label>姓名：</label>
-      <input type="text" name="name" />
+      <input type="text" name="name" id="name" />
     </div>
     <div>
       <label>密码：</label>
-      <input type="password" name="pass"/>
+      <input type="password" name="pass" id="pass" />
     </div>
     <div>
       <input type="checkbox" id="isRemPass">记住密码
@@ -46,29 +47,89 @@
   <script>
    $(function(){
       var dom = {
-        isRemPass:$('#isRemPass');
+        isRemPass:$('#isRemPass'),
+        name:$('#name'),
+        pass:$('#pass')
       };
 
       var controller = {
-        initial:function(){
-          //初始化事件，显示已有的cookie 的值
-          console.log('cookie');
-          console.log(document.cookie);
+        initial:function(keyname,keypass){
+          //初始化事件，console已有的cookie 的值
+          if(cookieController.isSetByKey(keyname)){
+            dom.isRemPass.attr('checked',true);
+            dom.name.val(cookieController.getCookieByKey(keyname));
+          }
+          if(cookieController.isSetByKey(keypass)){
+            dom.pass.val(cookieController.getCookieByKey(keypass));
+          }
         },  
         register:function(){
           //记住密码事件的注册
-          this.initial();
-          console.log('---------initial------');
+          var node = this;//感觉如果不设置这个总是容易写错
+
+          node.initial();
           dom.isRemPass.on('click',function(){
-            document.cookie.isRemember = true;
-            console.log('-------aftercookie-----');
-            this.initial();
+            var isRem = dom.isRemPass.is(':checked');
+            if(isRem){
+              var $name = $('#name'),
+                  $pass = $('#pass');
+              cookieController.setCookie('name',$name.val(),1);
+              cookieController.setCookie('pass',$pass.val(),1);
+              cookieController.getCookieByKey('name');
+            }
           });
+        }
+      };
+
+      //Cookie 的相关操作 参考链接:http://www.w3schools.com/js/js_cookies.asp
+      var cookieController = {
+        setCookie:function(key,value,days){
+          if(this.getCookie(key)){
+            //如果已经设置过这个cookie 则return
+            return;
+          }
+          var d = new Date();
+          //设置cookie 过期的时间
+          d.setTime(d.getTime() + days*24*60*60*1000);
+          var expires = 'expires=' + d.toUTCString();
+          //设置cookie 的值和过期时间
+          document.cookie = key+'='+value+';'+expires;
+          //注意如何设置document.cookie 
+          //比如我们要设置多个document.cookie也是这么设置的
+          //document.cookie = "firstname = 安";
+          //document.cookie = "username = 然";
+        },
+        deleteCookie:function(key){
+
+        },
+        getCookie:function(){
+          return document.cookie;
+        },
+        getCookieByKey:function(key){
+          var cookiearr = document.cookie.split(';');
+          for( var i=0;i<cookiearr.length;i++ ){
+            if(cookiearr[i].indexOf(key+'=')!=-1){
+              var startindex = cookiearr[i].indexOf(key+'='),
+                  keystr = key+'=',
+                  endindex = startindex + keystr.length;
+              return cookiearr[i].substr(endindex);
+            }
+          }
+          return null;
+        },
+        //是否已经设置过这个cookie
+        isSetByKey:function(key){
+          if(this.getCookieByKey(key)){
+            return true;
+          }else{
+            return false;
+          }
         }
       };
 
       //入口脚本
       var main = function(){
+        controller.initial('name','pass');
         controller.register();
       };
       main();
