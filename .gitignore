@@ -1,0 +1,44 @@
+# Numerous always-ignore extensions
+*.bak
+*.bat
+*.patch
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.zip
+*.vi
+*~
+*.sass-cache
+config.js
+
+# OS or Editor folders
+.DS_Store
+._*
+.cache
+.project
+.settings
+
+.tmproj
+*.esproj
+*.sublime-project
+*.sublime-workspace
+nbproject
+thumbs.db
+
+# Folders to ignore
+.hg
+.svn
+.CVS
+.idea
+node_modules/
+jscoverage_lib/
+old/
+reference/
+*.iml
+*.php
+test.html
+test.ftl
