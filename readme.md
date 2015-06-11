@@ -1,7 +1,7 @@
-````前端脚本写法学习
-````学习qin 同学的写法 非常棒 主要也运用MVC的思想
+前端脚本写法学习
+学习qin 同学的写法 非常棒 主要也运用MVC的思想
 demo:
-<code>
+````
 /**
 * 申请额度--住房公积金
 * @date: 15-05-07
@@ -233,4 +233,4 @@ define(function(require,exports,module){
   main();
 
 });
-</code>
+````
