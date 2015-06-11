@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>文件上传</title>
+  <link href="../css/comm/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <link href="../css/comm/bootstrap-theme.min.css"  type="text/css" rel="stylesheet">
+  <link href="../css/file.css" type="text/css" rel="stylesheet"> 
+  <script src="../js/comm/jquery-1.11.2.js"></script>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" action="/pichandler">
+  <div class="container">
+    <span type="button" class="btn btn-success fileinput-button filebtncon">
+      <span>添加文件</span>
+      <input type="file" name="files" multiple class="j-file">
+    </span>
+    <!-- <button type="button" class="btn btn-primary j-upload">上传文件</button>
+    <button type="button" class="btn btn-info j-cancel">取消上传</button>
+    <button type="button" class="btn btn-danger j-delete">删除</button> -->
+  </div>
+</form>
+<table class="table table-striped j-table">
+  <tr>
+    <!-- <td>
+      <img src="" id="img" width="100px" height="100px" class="f-hide"/>    
+    </td>
+    <td>
+    <div><span class="j-name"></span></div>
+    </td>
+    <td><span class="j-size"></span></td>
+    <td>
+      <button type="button" class="btn btn-primary j-upload disabled">上传</button>
+      <button type="button" class="btn btn-info j-cancel disabled">取消</button>
+    </td> -->
+  </tr>
+</table>
+<script src="../js/index.js"></script> 
+</body>
+</html>
