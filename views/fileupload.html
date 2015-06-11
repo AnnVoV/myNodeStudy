@@ -7,6 +7,7 @@
   <link href="../css/comm/bootstrap-theme.min.css"  type="text/css" rel="stylesheet">
   <link href="../css/file.css" type="text/css" rel="stylesheet"> 
   <script src="../js/comm/jquery-1.11.2.js"></script>
+  <script src="../js/comm/handlebar.js"></script>
 </head>
 <body>
 <form method="post" enctype="multipart/form-data" action="/pichandler">
@@ -21,8 +22,8 @@
   </div>
 </form>
 <table class="table table-striped j-table">
-  <tr>
-    <!-- <td>
+  <!-- <tr>
+    <td>
       <img src="" id="img" width="100px" height="100px" class="f-hide"/>    
     </td>
     <td>
@@ -32,9 +33,39 @@
     <td>
       <button type="button" class="btn btn-primary j-upload disabled">上传</button>
       <button type="button" class="btn btn-info j-cancel disabled">取消</button>
-    </td> -->
-  </tr>
+    </td> 
+  </tr> -->
 </table>
-<script src="../js/index.js"></script> 
+
+<!-- 数据模板 -->
+<script id="tpl" type="text/x-handlebars-template">
+  <tr>
+    <td>
+      <img src="{{img}}" id="img" width="100px" height="100px" class="f-hide"/>    
+    </td>
+    <td>
+    <div><span class="j-name">{{name}}</span></div>
+    </td>
+    <td><span class="j-size">{{size}}</span></td>
+    <td>
+      <button type="button" class="btn btn-primary j-upload disabled">上传</button>
+      <button type="button" class="btn btn-info j-cancel disabled">取消</button>
+    </td> 
+  </tr>
+</script>
+<script type="text/javascript">
+  $(function(){
+    var template = Handlebars.compile($("#tpl").html());
+    var data = {
+      img:"./test/jpg",
+      name:"test",
+      size:"20MB"
+    };
+
+    console.log(template(data));
+    /*$('.j-table').html(templ(data));*/
+  });
+</script>
+<!-- <script src="../js/index.js"></script>  -->
 </body>
 </html>

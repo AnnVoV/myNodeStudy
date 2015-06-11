@@ -15,6 +15,7 @@ $(function(){
 
     var controller = {
       bindEvents:function(){
+        console.log('bind events');
         this.selectFile();
         this.uploadFile();
       },
@@ -26,18 +27,32 @@ $(function(){
          *onload 的时候通过e.target.result 得到读取的文件的结果
          */
         dom.file.on('change',function(){
-          console.log('file change');
           var filearr = dom.file.get(0).files;
               file = filearr[0],
               reader = new FileReader();
+
           reader.onload = function(e){
-            dom.img.removeClass(hideClass);
+            /*dom.img.removeClass(hideClass);
             dom.img.attr('src',e.target.result);
             dom.name.html(file.name);
             dom.size.html((file.size/1024).toFixed(2)+'MB');
 
             dom.upload.removeClass(disabledClass);
-            dom.cancel.removeClass(disabledClass);
+            dom.cancel.removeClass(disabledClass);*/
+            /**
+             * 添加上传的数据
+             */
+            var data = {
+              img:e.target.result,
+              name:file.name,
+              size:(file.size/1024).toFixed(2)+'MB'
+            };//数据模型
+
+            console.log(data);
+            model.setData(data,dom.table);
+            /*var templ = model.setData(data);
+            console.log('templ',templ);
+            dom.table.html(templ);*/
           };
           reader.readAsDataURL(file);
         });
@@ -70,12 +85,20 @@ $(function(){
     var view = {
 
     };
+
+    var model = {
+      setData:function(data,container){
+        var template = Handlebars.compile($('#tpl').html());
+        container.html(template(data));
+      } 
+    };
     
 
     //main 入口脚本
     var main = function(){
-
+      controller.bindEvents();
     };
     
+    main();
 
   });
