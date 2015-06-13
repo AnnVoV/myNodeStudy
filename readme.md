@@ -1,7 +1,8 @@
 ####
   通过使用gulp-seajs-combo 插件我们可以合并我们的seajs文件  
-  [gulp-seajs-combo 参考手册](https://github.com/chenmnkken/gulp-seajs-combo/blob/master/README_CN.md)
-  [gulp-seajs-combo 使用的详细参考文章，值得阅读]（http://stylechen.com/gulp-seajs-combo.html）
+  [gulp-seajs-combo 参考手册](https://github.com/chenmnkken/gulp-seajs-combo/blob/master/README_CN.md)  
+  
+  [gulp-seajs-combo 使用的详细参考文章，值得阅读](http://stylechen.com/gulp-seajs-combo.html)
 
 ####
   gulp-seajs-combo 的目的  
