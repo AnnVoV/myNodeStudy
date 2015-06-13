@@ -13,7 +13,33 @@
         dom = document.getElementById('test');  
          
     dom.innerHtml = resut;
+  });  
+````  
+  
+
+````
+  b.js  
+  define(function(require,exports,module){
+    module.exports = "I know it's the fact!";
   });
 
+````  
   
-````
+####
+  使用gulp-seajs-combo 它会将两个文件合并为一个文件，我觉得这个插件比spm 好用太多了  
+  ````
+    define('b',function(require,exports,module){
+      return " I know it's the fact!";
+    });
+    define('a',['b'],function(require,exports,module){
+       var b = require('b'),
+           resultstr = 'What the hell!'+ b,
+           dom = document.getElementById('result');
+
+        dom.innerHTML = resultstr;
+    });  
+  ````
+####
+  进入该项目 node app.js 在url中访问 http://localhost:3000/index.html,即可看到效果
+
+
