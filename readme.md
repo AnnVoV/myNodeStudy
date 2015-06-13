@@ -1,8 +1,9 @@
-##目录  
-  ####[gulp-seajs-combo插件的使帮助我们合并seajs文件]https://github.com/AnnVoV/myNodeStudy/tree/seajs
+##1.Node.js 学习目录   
+  ####[(1)gulp-seajs-combo插件的使帮助我们合并seajs文件]https://github.com/AnnVoV/myNodeStudy/tree/seajs  
+  ####[(2)seajs with handlebars 的使用]
 
 
-####前端脚本写法学习
+##2.前端脚本写法学习  
 ####学习qin 同学的写法 非常棒 主要也运用MVC的思想
 ####demo:
 ````
