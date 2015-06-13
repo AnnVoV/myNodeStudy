@@ -1,6 +1,10 @@
-#前端脚本写法学习
-#学习qin 同学的写法 非常棒 主要也运用MVC的思想
-#demo:
+##目录  
+  ####[gulp-seajs-combo插件的使帮助我们合并seajs文件]https://github.com/AnnVoV/myNodeStudy/tree/seajs
+
+
+####前端脚本写法学习
+####学习qin 同学的写法 非常棒 主要也运用MVC的思想
+####demo:
 ````
 /**
 * 申请额度--住房公积金
