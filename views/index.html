@@ -4,15 +4,27 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <script src="../dist/comm/sea-2.3.0.js" type="text/javascript"></script>
+  <script src="../js/handlebars.js"></script>
 </head>
 <body>
-  <div>Let's use gulp-seajs-combo</div>
+  <div>Let's use seajs and handlebars together</div>
+  <div>需要使用gulp 的三个插件：</div>
+  <div>(1)gulp-seajs-combo</div>
+  <div>(2)gulp-wrap</div>
+  <div>(3)gulp-handlebars</div>
+  <br>
+  <br>
+  <br>
   <div id="result"></div>
   <script>
+  /**
+   *首先运行gulp seajscombohbs 对模板文件进行预编译，并将其和主
+   *脚本进行合并
+   */
     seajs.config({
       base:"./dist"
     });
-    seajs.use('main.js');
+    seajs.use('useTpl.js');
   </script>
 </body>
 </html>
