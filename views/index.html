@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="../dist/comm/sea-2.3.0.js" type="text/javascript"></script>
+</head>
+<body>
+  <div>Let's use gulp-seajs-combo</div>
+  <div id="result"></div>
+  <script>
+    seajs.config({
+      base:"./dist"
+    });
+    seajs.use('main.js');
+  </script>
+</body>
+</html>
