@@ -1,45 +1,40 @@
 ####
-  通过使用gulp-seajs-combo 插件我们可以合并我们的seajs文件  
-  [gulp-seajs-combo](https://github.com/chenmnkken/gulp-seajs-combo/blob/master/README_CN.md)
+  将seajs 和 handlebars 结合使用
+####
+方法：  
+ (1)html中要引入sea.js 和handlebars.js 文件  
+ (2)在主js脚本里面，我们通过var tpl = require('*.tpl')直接引入模板文件  
+ (3)通过 tpl({data...}) 直接给模板文件传值  
 
 ####
-  gulp-seajs-combo 的目的  
-````  
-  a.js  
-  define(function(require,exports,module){
-    var result1 = 'this is a.js',  
-        b = require('./b.js'),  
-        result = result1+b,  
-        dom = document.getElementById('test');  
-         
-    dom.innerHtml = resut;
-  });  
-````  
-  
+  gulpfile.js 的写法： 
 
-````
-  b.js  
-  define(function(require,exports,module){
-    module.exports = "I know it's the fact!";
-  });
-
-````  
-  
-####
-  使用gulp-seajs-combo 它会将两个文件合并为一个文件，我觉得这个插件比spm 好用太多了  
   ````
-    define('b',function(require,exports,module){
-      return " I know it's the fact!";
+    var gulp = require('gulp'),
+        handlebars = require('gulp-handlebars'),
+        wrap = require('gulp-wrap'),
+        seajsCombo = require('gulp-seajs-combo');
+    
+    /使用gulp-handlebars 和 gulp-seajs-combo 插件
+    gulp.task( 'seajscombohbs', function(){
+        return gulp.src( 'public/js/useTpl.js' )
+            .pipe( seajsCombo({
+                plugins : [{
+                    ext : [ '.tpl' ],
+                    use : [{
+                            plugin : handlebars,
+                        },{
+                            plugin : wrap,
+                            param : ['define(function(){return Handlebars.template(<%= contents %>)});']
+                    }]
+                }]
+            }))
+            .pipe( gulp.dest('public/dist'));
     });
-    define('a',['b'],function(require,exports,module){
-       var b = require('b'),
-           resultstr = 'What the hell!'+ b,
-           dom = document.getElementById('result');
-
-        dom.innerHTML = resultstr;
-    });  
-  ````
+  ````  
 ####
-  进入该项目 node app.js 在url中访问 http://localhost:3000/index.html,即可看到效果
+  这样我们直接通过执行gulp seajscombohbs 就能得到合并后的文件，直接使用合并后的主脚本即可。  
+  gulpfile里面通过使用gulp-wrap 和 gulp-handlebars 把.tpl 文件封装成了seajs可以使用的.js  
+  然后与主脚本文件进行了合并。
 
 
