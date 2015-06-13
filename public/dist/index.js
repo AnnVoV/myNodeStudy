@@ -1,10 +1,21 @@
-define(function(require,exports,module){
+define('table.tpl',function(){return Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+    var helper, alias1=helpers.helperMissing, alias2="function", alias3=this.escapeExpression;
+
+  return "<tr>\n  <td>\n    <img src=\""
+    + alias3(((helper = (helper = helpers.img || (depth0 != null ? depth0.img : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"img","hash":{},"data":data}) : helper)))
+    + "\" id=\"img\" width=\"100px\" height=\"100px\" class=\"f-hide\"/>    \n  </td>\n  <td>\n  <div><span class=\"j-name\">"
+    + alias3(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"name","hash":{},"data":data}) : helper)))
+    + "</span></div>\n  </td>\n  <td><span class=\"j-size\">"
+    + alias3(((helper = (helper = helpers.size || (depth0 != null ? depth0.size : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"size","hash":{},"data":data}) : helper)))
+    + "</span></td>\n  <td>\n    <button type=\"button\" class=\"btn btn-primary j-uploadFile disabled\">上传</button>\n    <button type=\"button\" class=\"btn btn-info j-cancelFile disabled\">取消</button>\n  </td> \n</tr>";
+},"useData":true})});
+define('index',['jquery','table.tpl'],function(require,exports,module){
   var $ = require('jquery');
   //注意在gulpfile.js的gulp-seajs-combo 插件里面设置ignore:jquery
   //查看jquery 是否成功引入
   //alert($);
   //动态模板文件
-  var tpl = require('../../views/tpl/table.tpl');
+  var tpl = require('table.tpl');
 
   var dom = {
     file:$('.j-addFile'),

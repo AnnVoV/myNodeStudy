@@ -1,79 +1,50 @@
 var gulp = require('gulp'),
+    handlebars = require('gulp-handlebars'),
+    wrap = require('gulp-wrap'),
     stylus = require('gulp-stylus'),
-    base64 = require('gulp-base64'),
-    autoprefix = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css');
+    seajsCombo = require( 'gulp-seajs-combo' );
 
-/*var template = require('gulp-template');*/
-var versionId = new Date().getTime();
 
-var paths = {
-  stylus: ['stylus/**/*.styl'],
-  imgs: ['stylus/sprites/*.png'],
-  html: ['html/**/*.html']
-};
+//合并seajs 文件,使用gulp-seajs-combo
+gulp.task( 'seajscombo', function(){
+  return gulp.src( 'public/js/main.js')
+      .pipe( seajsCombo())
+      //生成合并的文件
+      .pipe( gulp.dest('public/dist'));
+}); 
 
-var SCRIPT = "<!-- START NetEase Devilfish 2006 --> " +
-"<script src=\"//analytics.163.com/ntes.js\" type=\"text/javascript\"></script> " +
-"<script type=\"text/javascript\"> " +
-"_ntes_nacc = \"loan\"; " +
-"neteaseTracker(); " +
-"</script> " +
-"<!-- END NetEase Devilfish 2006 -->" +
-"<script type=\"text/javascript\">" +
-"var _gaq = _gaq || [];" +
-"_gaq.push(['_setAccount', 'UA1431655066318'],['_setLocalGifPath', '/UA1431655066318/__utm.gif'],['_setLocalServerMode']);" +
-"_gaq.push(['_addOrganic','baidu','word']);_gaq.push(['_addOrganic','soso','w']);_gaq.push(['_addOrganic','youdao','q']);" +
-"_gaq.push(['_addOrganic','sogou','query']);_gaq.push(['_addOrganic','so.360.cn','q']);" +
-"_gaq.push(['_trackPageview']);_gaq.push(['trackPageLoadTime']);" +
-"(function() {" +
-"var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;" +
-"ga.src = '/ga.js';" +
-"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);" +
-"})();" +
-"</script>"
-
-//imgs to sprite
-/*gulp.task('sprite', function () {
-  var spriteData = 
-  gulp.src(paths.imgs)
-  .pipe(spritesmith({
-    imgName: '//i.epay.126.net/a/l/dist/css/i/sprite.png',
-    cssName: 'sprite.styl'
-  }));
-  spriteData.img.pipe(gulp.dest('dist/css'));
-  spriteData.css.pipe(gulp.dest('stylus/comm'));
-});*/
-
-//stylus to css
-gulp.task('stylus', function() {
-  return gulp.src(paths.stylus)
-    .pipe(stylus())
-    .pipe(autoprefix('last 2 versions'))
-    //.pipe(minifycss({keepBreaks:true}))
-    .pipe(minifycss())
-    //.pipe(base64())
-    .pipe(gulp.dest('public/css'));
+//使用gulp-handlebars 和 gulp-seajs-combo 插件
+gulp.task( 'seajscombohbs', function(){
+  return gulp.src( 'public/js/*.js' )
+      .pipe( seajsCombo({
+          //忽略对jquery 的处理
+          ignore:['jquery'],
+          plugins : [{
+              ext : [ '.tpl' ],
+              use : [{
+                      plugin : handlebars,
+                  },{
+                      plugin : wrap,
+                      param : ['define(function(){return Handlebars.template(<%= contents %>)});']
+              }]
+          }]
+      }))
+      .pipe(gulp.dest('public/dist'));
 });
 
-
-//html version
-/*gulp.task('tpl', function() {
-  gulp.src(paths.html)
-    .pipe(template({
-      domain: '//i.epay.126.net/a/l',
-      //domain: '//i.epay.126.net',
-      version: versionId,
-      analytics: SCRIPT
-    }))
-    .pipe(gulp.dest('/Users/ann/Documents/Netease/loanSvn/163pc'));
-});*/
-
-gulp.task('watch', function() {
-  gulp.watch(paths.stylus, ['stylus']);
-  gulp.watch(paths.img, ['sprite']);
-  gulp.watch(paths.html, ['tpl']);
+gulp.task('stylus',function(){
+  return gulp.src('stylus/*.styl')
+        .pipe(stylus())
+        .pipe(gulp.dest('public/css'));
 });
 
+gulp.task('watch',function(){
+  gulp.watch('public/js/*.js', ['seajscombohbs']);
+  gulp.watch('stylus/*.styl', ['stylus']);
+})
 
-gulp.task('default', ['sprite','stylus','tpl']);
+//Default gulp task to run
+//seajscombohbs stylus 
+gulp.task('default',['seajscombohbs','stylus']);
+
+

@@ -6,7 +6,7 @@
   <link href="../css/comm/bootstrap.min.css" type="text/css" rel="stylesheet">
   <link href="../css/comm/bootstrap-theme.min.css"  type="text/css" rel="stylesheet">
   <link href="../css/file.css" type="text/css" rel="stylesheet"> 
-  <script src="../js/comm/jquery-1.11.2.js"></script>
+  <script src="../js/comm/sea-2.3.0.js"></script>
   <script src="../js/comm/handlebar.js"></script>
 </head>
 <body>
@@ -14,58 +14,23 @@
   <div class="container">
     <span type="button" class="btn btn-success fileinput-button filebtncon">
       <span>添加文件</span>
-      <input type="file" name="files" multiple class="j-file">
+      <input type="file" name="files[]" multiple class="j-addFile" id="filebtn">
     </span>
-    <!-- <button type="button" class="btn btn-primary j-upload">上传文件</button>
-    <button type="button" class="btn btn-info j-cancel">取消上传</button>
-    <button type="button" class="btn btn-danger j-delete">删除</button> -->
+    <button type="button" class="btn btn-primary j-uploadFile">上传文件</button>
+    <button type="button" class="btn btn-info j-cancelFile">取消上传</button>
   </div>
 </form>
 <table class="table table-striped j-table">
-  <!-- <tr>
-    <td>
-      <img src="" id="img" width="100px" height="100px" class="f-hide"/>    
-    </td>
-    <td>
-    <div><span class="j-name"></span></div>
-    </td>
-    <td><span class="j-size"></span></td>
-    <td>
-      <button type="button" class="btn btn-primary j-upload disabled">上传</button>
-      <button type="button" class="btn btn-info j-cancel disabled">取消</button>
-    </td> 
-  </tr> -->
 </table>
-
-<!-- 数据模板 -->
-<script id="tpl" type="text/x-handlebars-template">
-  <tr>
-    <td>
-      <img src="{{img}}" id="img" width="100px" height="100px" class="f-hide"/>    
-    </td>
-    <td>
-    <div><span class="j-name">{{name}}</span></div>
-    </td>
-    <td><span class="j-size">{{size}}</span></td>
-    <td>
-      <button type="button" class="btn btn-primary j-upload disabled">上传</button>
-      <button type="button" class="btn btn-info j-cancel disabled">取消</button>
-    </td> 
-  </tr>
-</script>
-<script type="text/javascript">
-  $(function(){
-    var template = Handlebars.compile($("#tpl").html());
-    var data = {
-      img:"./test/jpg",
-      name:"test",
-      size:"20MB"
-    };
-
-    console.log(template(data));
-    /*$('.j-table').html(templ(data));*/
-  });
-</script>
-<!-- <script src="../js/index.js"></script>  -->
+  <script>
+    seajs.config({
+      base:"/dist/",
+      alias:{
+        jquery:"comm/jquery-1.11.2.js"
+      }
+    });
+    //主入口文件
+   seajs.use('index.js');
+  </script>
 </body>
 </html>

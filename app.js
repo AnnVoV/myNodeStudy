@@ -1,34 +1,25 @@
-var express = require('express');
-var path = require('path');
+var express = require('express'),
+    bodyParser = require('body-parser'),
+    fs = require('fs'),
+    path = require('path');
+
 var app = express();
-var bodyParser = require('body-parser');
-var hbs = require('hbs');
-/*var handlebars = require('express3-handlebars')
-    .create({ defaultLayout: 'main','extname':'.hbs'});*/
 
+app.use(express.static(path.join(__dirname,'/public')));
 
-/*app.engine('handlebars', handlebars.engine);
-app.set('view engine', 'handlebars'); */
-app.set('view engine','html');
-app.engine('html',hbs.__express);
-app.set('views',path.join(__dirname,'views'));
-
-app.use(express.static(path.join(__dirname, '/public')));
-
-app.get('/fileupload',function(req,res){
-  res.render('fileupload.html',{layout:null});
+app.get('/',function(req,res){
+  res.sendFile(__dirname+'/views/fileupload.html');
 });
 
-app.get('/test',function(req,res){
-  res.render('test.html',{layout:null});
-});
-
-app.post('/pichandler',function(req,res){
+app.post('/picHandler',function(req,res){
+  //如果是ajax 请求
   if(req.xhr){
-    res.send({success:true});
-  }else{  
-    res.send('wrong');
+    //我们要处理上传来的文件
+    res.send({code:0});
+  }else{
+    //如果上传文件失败
+    res.send({code:-1,msg:"上传文件失败！"});
   }
 });
 
-app.listen(8088);
+app.listen('3000')
