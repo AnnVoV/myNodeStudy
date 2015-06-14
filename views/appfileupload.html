@@ -10,18 +10,18 @@
   <script src="../js/comm/handlebar.js"></script>
 </head>
 <body>
-<form  action="/picHandler"  method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="/pichandler">
   <div class="container">
     <span type="button" class="btn btn-success fileinput-button filebtncon">
       <span>添加文件</span>
-      <input type="file" name="files" class="j-addFile" id="file">
+      <input type="file" name="files[]" multiple class="j-addFile" id="filebtn">
     </span>
     <button type="button" class="btn btn-primary j-uploadFile">上传文件</button>
     <button type="button" class="btn btn-info j-cancelFile">取消上传</button>
   </div>
-  <table class="table table-striped j-table">
-  </table>
 </form>
+<table class="table table-striped j-table">
+</table>
   <script>
     seajs.config({
       base:"/dist/",
