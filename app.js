@@ -1,53 +1,73 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    //处理form 的enctype为multipart/form-data 的插件
-    multipart = require('connect-multiparty'),
-    fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    app = express();
 
-var app = express();
-var multipartMiddleware = multipart();
-
-app.use(express.static(path.join(__dirname,'/public')));
-app.use(bodyParser.urlencoded({ extended:true,limit:'50mb'}));
-app.set('uploadPath',path.join(__dirname,'/public/uploads'));
-
-
-app.get('/',function(req,res){
-  res.sendFile(__dirname+'/views/fileupload.html');
-});
-
-app.post('/picHandler',multipartMiddleware,function(req,res){
-  //如果是ajax 请求
-  if(req.xhr){
-    //我们要处理上传来的文件
-    //通过req.files 可以看到上传的相关的文件信息
-    //通过req.files 可以获得上传文件的数据
-     var fileobj = req.files,//获取上传的file对象
-         temppath = fileobj.files.path,
-         date = new Date(),
-         month = 0,
-         upFileName = '';
-
-      month = date.getMonth()+1;
-      month = (month.length<2)?'0'+month:month;
-      upFileName = ""+ date.getFullYear() + month + date.getDate()+date.getHours()+date.getMinutes();
-      //读取上传的文件并且把文件内容保存到public/uploads 文件夹下
-      fs.readFile(temppath,function(err,data){
-        if(err){
-          throw err;
-          res.send({code:-1});
+var handlebars = require('express3-handlebars').create({
+    /* 默认的主模板为main */
+    defaultLayout:'main',
+    helpers: {
+        //设置handlebars 里面的自定义标签
+        section: function(name, options){
+            if(!this._sections) this._sections = {};
+            this._sections[name] = options.fn(this);
+            return null;
         }
-        //保存上传的文件内容
-        fs.writeFile(app.get('uploadPath')+'/'+ upFileName +'.jpg',data,function(err,data){
-          if(err)throw err;
-          res.send({code:0});
-        });
-      });
-  }else{
-    //如果上传文件失败
-    res.send({code:-1,msg:"上传文件失败！"});
-  }
+    }
 });
 
-app.listen('3000')
+app.use( express.static(path.join(__dirname+'/public')));
+
+//模拟数据接口
+var model = {
+  getInfoData:function(){
+    return {
+        locations: [
+            {
+                name: 'Portland',
+                forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
+                iconUrl: 'http://icons-ak.wxug.com/i/c/k/cloudy.gif',
+                weather: 'Overcast',
+                temp: '54.1 F (12.3 C)',
+            },
+            {
+                name: 'Bend',
+                forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
+                iconUrl: 'http://icons-ak.wxug.com/i/c/k/partlycloudy.gif',
+                weather: 'Partly Cloudy',
+                temp: '55.0 F (12.8 C)',
+            },
+            {
+                name: 'Manzanita',
+                forecastUrl: 'http://www.wunderground.com/US/OR/Manzanita.html',
+                iconUrl: 'http://icons-ak.wxug.com/i/c/k/rain.gif',
+                weather: 'Light Rain',
+                temp: '55.0 F (12.8 C)',
+            },
+        ],
+    };
+  }
+};
+
+
+
+//设置模板引擎
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
+
+
+app.use(function(req,res,next){
+  if(!res.locals.partials) res.locals.partials = {};
+  //res.locals 在一个对话中是全局的，对话结束内容会被清空，不同于app.locals 这是在一个应用中是全局的
+  //获取模拟的数据对象并且把它填充到weather 中
+  res.locals.partials.weather = model.getInfoData();
+  next();
+});
+
+
+//首页
+app.get('/',function(req,res){
+  res.render('home');
+});
+
+app.listen(8088);

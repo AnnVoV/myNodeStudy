@@ -1,44 +1,6 @@
-# Numerous always-ignore extensions
-*.bak
-*.bat
-*.patch
-*.diff
-*.err
-*.orig
-*.log
-*.rej
-*.swo
-*.swp
-*.zip
-*.vi
-*~
-*.sass-cache
-config.js
+# ignore packages installed by npm
+node_modules
 
-# OS or Editor folders
+# put any other files you don't want to check in here,
+# such as .DS_Store (OSX), *.bak, etc.
 .DS_Store
-._*
-.cache
-.project
-.settings
-
-.tmproj
-*.esproj
-*.sublime-project
-*.sublime-workspace
-nbproject
-thumbs.db
-
-# Folders to ignore
-.hg
-.svn
-.CVS
-.idea
-node_modules/
-jscoverage_lib/
-old/
-reference/
-*.iml
-*.php
-test.html
-test.ftl
