@@ -1,0 +1,32 @@
+<form action="registerHandler" method="post" name="regForm">
+  <div class="form-group">
+     <label for="exampleInputEmail1">Email address</label>
+     <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" name="email">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+  </div>
+  <div>
+    <button class="btn btn-primary j-reg">注册</button>
+  </div>
+</form>
+<script>
+  $(function(){
+    var formData = new FormData($('form')[0]);
+
+    $('.j-reg').on('click',function(e){
+        $.ajax({
+          url:'/registerHandler',
+          type:'post',
+          data:{name:'ann',email:'1051961997'},
+          success:function(data){
+            console.log(data);
+          },
+          error:function(){
+            console.log('error');
+          }
+        });
+    });
+  });
+</script>
