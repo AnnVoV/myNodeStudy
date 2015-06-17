@@ -4,11 +4,9 @@ var express = require('express'),
     credentials = require('./credentials.js'),
     bodyParser = require('body-parser');
 
-var handlebars = require('express3-handlebars').create(
-    {defaultLayout:'testmain.handlebars'}
-);
+var exphbs = require('express3-handlebars');
+/*exphbs.create({defaultLayout:'main.hbs'});*/
 
-/*app.use(express.static(path.join(__dirname+'/public')));*/
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
 app.use(require('express-session')());
@@ -18,8 +16,8 @@ app.use(bodyParser.urlencoded({
   extended:true
 }));
 //设置模板引擎
-app.engine('handlebars', handlebars.engine);
-app.set('view engine', 'handlebars');
+app.engine('.hbs', exphbs({extname: '.hbs',defaultLayout:'main.hbs'}));
+app.set('view engine', '.hbs');
 
 
 // flash message middleware
@@ -63,7 +61,8 @@ app.get('/register',function(req,res){
 });
 
 app.post('/registerHandler',function(req,res){
-  if(req.xhr) return res.json({success:true});//为什么如果不先写这句就跳转不了页面
+ // if(req.xhr) return res.json({success:true});//为什么如果不先写这句就跳转不了页面
+    if(req.xhr) res.json({success:true});
     req.session.flash = {
       type: 'success',
       intro: 'Thank you!',
