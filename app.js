@@ -1,15 +1,31 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var handlebars = require('express3-handlebars')
+var exphbs = require('express3-handlebars');
+var data = require('./tourist');
+var session = require('express-session');
+var credentials = require('./credentials');
 app = express();
 
 app.use(express.static(__dirname+'/public'));
-app.use(bodyParser({urlEncoded:true}));
+app.use(bodyParser.urlencoded({extended:false}));
+app.use(require('cookie-parser')(credentials.cookieSecret));
+//必须要先引入这个cookie-parser 才能使用express-session模块
+app.use(session());
+//使用session 
+
 app.engine('hbs', exphbs({
-  layoutsDir: 'views',
-  defaultLayout: 'layout',
+  defaultLayout: 'main',
   extname: '.hbs'
 }));
-app.set('view engine', 'hbs');
+app.set('view engine','hbs');
 
-app.listen(8088)
+app.get('/register',function(req,res){
+  res.render('register',data.getPlaces());
+});
+
+app.get('/shoppingcar',function(req,res){
+  console.log(req.query);
+  
+});
+
+app.listen(8088);
