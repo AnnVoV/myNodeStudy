@@ -74,6 +74,7 @@ app.post('/registerHandler',function(req,res){
       message: 'You have now been signed up for the newsletter.'
     };//全局数据*///不能这样写，因为页面跳转时数据都没了，要先存储在session里面？
   return res.redirect(303, '/archieve');
+  //注意跳转页面的这里要写return
 });
 
 app.get('/archieve',function(req,res){

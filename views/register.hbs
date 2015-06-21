@@ -23,4 +23,98 @@
     已经成功添加到订单！
   </p>
 </div>
+<script>
+  $(function(){
+    /*var jqDom = {
+      order:$('.j-order')
+    }
+    jqDom.order.on('click',function(){
+      var promise = $.ajax({
+        url:'/shoppingcar',
+        data:{name:'ann',age:23}
+      });
+      //$.ajax() 操作完成以后如果是低于1.5的jQuery返回的是XHR,没法进行链式操作
+      //如果高于1.5版本,返回的是deferred 对象
+      promise
+        .done(successFunction)
+        .fail(errorFunction);
+
+      function successFunction(){
+        console.log('ajax data success....');
+      }
+      function errorFunction(){
+        console.log('ajax data error.....');
+      }
+    });*/
+    var jqDom = {
+      order:$('.j-order')
+    };
+
+    var controller = {
+      initial:function(){
+        var pointer = this;
+        jqDom.order.on('click',function(){
+          var data = model.setData($(this));
+          model.refreshData(data.location,data.size,data.price);
+          pointer.ajaxRequest();
+        });
+      },
+      ajaxRequest:function(){
+        //提交数据是不是只有post才能跳转页面啊？？
+        var promise = $.ajax(
+          {
+            url:'/registerHandler',
+            data:model.data,
+            type:'post'
+          }
+        );
+
+        promise.done(successFunc);
+        promise.fail(errorFunc);
+
+        var successFunc = function(){
+          console.log('success');
+        };
+        var errorFunc = function(){
+          console.log('error');
+        };
+      }
+    };
+
+    var view = {
+    };
+
+    var model = {
+      data:'',
+      refreshData:function(loca,size,price){
+        this.data = {
+          location:loca,
+          size:size,
+          price:price
+        };
+      },
+      setData:function($elm){
+        var $row = $elm.parent().parent(),
+            location = $row.find('.j-place').html(),
+            size = $row.find('.j-size').val(),
+            price = $row.find('.j-price').html();
+
+        return {
+          location:location,
+          size:size,
+          price:price
+        };
+      }
+    };
+
+    //入口脚本
+    var main = function(){
+      controller.initial();
+    };
+
+    main();
+
+
+  });
+</script>
 
