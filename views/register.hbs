@@ -1,32 +1,120 @@
-<form action="registerHandler" method="post" name="regForm">
-  <div class="form-group">
-     <label for="exampleInputEmail1">Email address</label>
-     <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" name="email">
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
-  </div>
-  <div>
-    <button class="btn btn-primary j-reg">注册</button>
-  </div>
-</form>
+<div class="m-content">
+  <table class="table table-striped">
+    <tr>
+      <td>Location</td>
+      <td>Size</td>
+      <td>Price</td>
+      <td>Status</td>
+    </tr>
+    <!-- handlebars 通过each 来遍历数组 -->
+    {{#places}}
+    <tr>
+      <td><span class="j-place">{{place}}</span></td>
+      <td><input type="number" class="m-input j-size" min="{{../minSize}}" max="{{../maxSize}}" value="1"/></td>
+      <td><span class="j-price">{{price}}</span></td>
+      <td>
+        <input type="button" class="btn btn-primary j-order" value="预定"/>
+        <input type="button" class="btn btn-danger j-cancel" value="取消"/>
+      </td>
+    </tr>
+    {{/places}}
+  </table>
+  <p class="bg-success m-hide j-tip">
+    已经成功添加到订单！
+  </p>
+</div>
 <script>
   $(function(){
-    var formData = new FormData($('form')[0]);
+    /*var jqDom = {
+      order:$('.j-order')
+    }
+    jqDom.order.on('click',function(){
+      var promise = $.ajax({
+        url:'/shoppingcar',
+        data:{name:'ann',age:23}
+      });
+      //$.ajax() 操作完成以后如果是低于1.5的jQuery返回的是XHR,没法进行链式操作
+      //如果高于1.5版本,返回的是deferred 对象
+      promise
+        .done(successFunction)
+        .fail(errorFunction);
 
-    $('.j-reg').on('click',function(e){
-        $.ajax({
-          url:'/registerHandler',
-          type:'post',
-          data:{name:'ann',email:'1051961997'},
-          success:function(data){
-            console.log(data);
-          },
-          error:function(){
-            console.log('error');
-          }
+      function successFunction(){
+        console.log('ajax data success....');
+      }
+      function errorFunction(){
+        console.log('ajax data error.....');
+      }
+    });*/
+    var jqDom = {
+      order:$('.j-order')
+    };
+
+    var controller = {
+      initial:function(){
+        var pointer = this;
+        jqDom.order.on('click',function(){
+          var data = model.setData($(this));
+          model.refreshData(data.location,data.size,data.price);
+          pointer.ajaxRequest();
         });
-    });
+      },
+      ajaxRequest:function(){
+        //提交数据是不是只有post才能跳转页面啊？？
+        var promise = $.ajax(
+          {
+            url:'/registerHandler',
+            data:model.data,
+            type:'post'
+          }
+        );
+
+        promise.done(successFunc);
+        promise.fail(errorFunc);
+
+        var successFunc = function(){
+          console.log('success');
+        };
+        var errorFunc = function(){
+          console.log('error');
+        };
+      }
+    };
+
+    var view = {
+    };
+
+    var model = {
+      data:'',
+      refreshData:function(loca,size,price){
+        this.data = {
+          location:loca,
+          size:size,
+          price:price
+        };
+      },
+      setData:function($elm){
+        var $row = $elm.parent().parent(),
+            location = $row.find('.j-place').html(),
+            size = $row.find('.j-size').val(),
+            price = $row.find('.j-price').html();
+
+        return {
+          location:location,
+          size:size,
+          price:price
+        };
+      }
+    };
+
+    //入口脚本
+    var main = function(){
+      controller.initial();
+    };
+
+    main();
+
+
   });
 </script>
+
