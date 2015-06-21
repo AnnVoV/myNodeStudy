@@ -4,11 +4,22 @@
       <td>Location</td>
       <td>Money</td>
     </tr>
-    {{#carlist}}
+    {{#orderList}}
       <tr>
         <td>{{location}}</td>
         <td>{{price}}</td>
       </tr>
-    {{/carlist}}
+    {{/orderList}}
   </table>
+  <input type="button" class="btn j-back" value="返回"/>
 </div>
+<script>
+  $(function(){
+    //点击后退按钮
+    $('.j-back').on('click',function(){
+      console.log('back');
+      //js 控制浏览器后退
+      window.history.back();
+    });
+  });
+</script>

@@ -1,5 +1,5 @@
 <div class="m-content">
-<form action="/testHandler" method="post" name="regForm" role="form">
+<form action="/registerHandler" method="post" name="regForm" role="form">
   <table class="table table-striped">
     <tr>
       <td>Location</td>
@@ -8,45 +8,56 @@
       <td>Status</td>
     </tr>
     {{#places}}
-    <tr>
-      <td><span class="j-place">{{place}}</span></td>
-      <td><input type="number" class="m-input j-size" min="{{../minSize}}" max="{{../maxSize}}" value="1"/></td>
-      <td><span class="j-price">{{price}}</span></td>
-      <td>
-        <button class="btn btn-primary j-reg">预定</button>
-        <button class="btn btn-danger j-cancel">取消</button>
-      </td>
-    </tr>
+      <tr>
+        <td>
+          <span class="j-place">{{place}}</span>
+          <input type="hidden" value={{place}} name="location"/>
+        </td>
+        <td><input type="number" class="m-input j-size" min="{{../minSize}}" max="{{../maxSize}}" value="1" name="size"/></td>
+        <td>
+          <span class="j-price">{{price}}</span>
+          <input type="hidden" value={{price}} name="price"/>
+        </td>
+        <td>
+          <button class="btn btn-primary j-order">预定</button>
+          <button class="btn btn-danger j-cancel">取消</button>
+        </td>
+      </tr>
     {{/places}}
   </table>
   <!-- 表单里面的值一定要有传的值对应的name!!!不然页面无法跳转的 -->
   <input type="hidden" value="ann" name="name"/>
   <input type="hidden" value="1051961997@qq.com" name="email"/>
 </form>
+<div>
+  <input type="button" value="查看购物车" class="btn j-car"/>
+</div>
   <p class="bg-success m-hide j-tip">
     已经成功添加到订单！
   </p>
 </div>
 
-<!-- 
-  <script>
+<script>
   $(function(){
     var jqDom = {
-      order:$('.j-order')
+      order:$('.j-order'),
+      shoppingcar:$('.j-car')
     };
 
     var controller = {
       initial:function(){
-        var pointer = this;
+        var pointer = this;//指向controller的指针
         jqDom.order.on('click',function(){
           var data = model.setData($(this));
           model.refreshData(data.location,data.size,data.price);
-          console.log('send ajax request....');
+          console.log(data);
           pointer.ajaxRequest();
         });
+        pointer.showCar();
       },
       ajaxRequest:function(){
-        /*$.ajax(
+        console.log('data: ',model.data);
+        $.ajax(
           {
             url:'/registerHandler',
             type:'post',
@@ -58,21 +69,13 @@
               console.log('error....');
             }
           }
-        );*/
-
-        $.ajax(
-          {
-            url:'/registerHandler',
-            type:'post',
-            data:{name:'ann',email:'1051961997'},
-            success:function(data){
-              console.log(data);
-            },
-            error:function(){
-              console.log('error');
-            }
-          }
         );
+      },
+      showCar:function(){
+        jqDom.shoppingcar.on('click',function(){
+          console.log('show detail in car...');
+          window.location.href= '/orderList';
+        });
       }
     };
 
@@ -109,27 +112,7 @@
 
     main();
   });
-  </script>
--->
-
-<script>
-  $(function(){
-    var formData = new FormData($('form')[0]);
-
-    $('.j-reg').on('click',function(e){
-        console.log('send send send...');
-        $.ajax({
-          url:'/testHandler',
-          type:'post',
-          data:{name:'ann',email:'1051961997'},
-          success:function(data){
-            console.log(data);
-          },
-          error:function(){
-            console.log('error');
-          }
-        });
-    });
-  });
 </script>
+
+
 
