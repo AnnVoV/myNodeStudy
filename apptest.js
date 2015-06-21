@@ -1,12 +1,12 @@
 var express = require('express'),
     app = express(),
     path = require('path'),
-    credentials = require('./credentials.js'),
+    credentials = require('./credentials'),
+    touristData = require('./tourist'),
     bodyParser = require('body-parser');
 
 var exphbs = require('express3-handlebars');
 /*exphbs.create({defaultLayout:'main.hbs'});*/
-
 
 app.use(require('cookie-parser')(credentials.cookieSecret));
 app.use(require('express-session')());
@@ -19,11 +19,7 @@ app.use(bodyParser.urlencoded({
 app.engine('.hbs', exphbs({extname: '.hbs',defaultLayout:'main.hbs'}));
 app.set('view engine', '.hbs');
 
-
-// flash message middleware
 app.use(function(req, res, next){
-  // if there's a flash message, transfer
-  // it to the context, then clear it
   res.locals.flash = req.session.flash;
   delete req.session.flash;
   next();
@@ -57,17 +53,45 @@ app.get('/',function(req,res){
 });
 
 app.get('/register',function(req,res){
-  res.render('register');
+  //res.render('register',touristData.getPlaces());
+  res.render('test',touristData.getPlaces());
+  //是因为这里有动态数据？
 });
 
 app.post('/registerHandler',function(req,res){
-    if(req.xhr) res.json({success:true});
+    console.log('enter into this');
+    console.log(req.body);
+    //这是原生的写法
+    if(req.xhr){
+      console.log('enter...req.xhr');
+      return res.json({ success: true });
+    }
     req.session.flash = {
       type: 'success',
       intro: 'Thank you!',
       message: 'You have now been signed up for the newsletter.',
     };
-  return res.redirect(303, '/archieve');
+    console.log('redirect url....');
+    return res.redirect(302, '/archieve');
+    /*if(req.xhr) return res.json({success:true});
+    //因为res.json 会重复触发res.end所以在其前面要添加return 
+    req.session.flash = {
+      type: 'success',
+      intro: 'Thank you!',
+      message: 'You have now been signed up for the newsletter.',
+    };
+    console.log(req.body);
+    //输出从前端传来的数据
+    return res.redirect(303, '/archieve');*/
+});
+
+
+app.post('/test',function(req,res){
+  if(req.xhr){
+    return res.json({success:true});
+  } 
+  //页面跳转
+  return res.redirect(303,'/archieve');
 });
 
 app.get('/archieve',function(req,res){

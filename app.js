@@ -24,6 +24,7 @@ app.use(express.static(__dirname+'/public'));
 app.use(function(req, res, next){
   // if there's a flash message, transfer
   // it to the context, then clear it
+  console.log('start first...');
   res.locals.flash = req.session.flash;
   delete req.session.flash;
   next();
@@ -52,25 +53,42 @@ app.get('/register',function(req,res){
   return res.redirect(303, '/archieve');
   //注意跳转页面的这里要写return
 });*/
+app.get('/test',function(req,res){
+  res.render('register',data.getPlaces());
+});
+
+app.post('/testHandler',function(req,res){
+  console.log('fuck:',req.body);
+  if(req.xhr)
+      return res.send({success:true});
+  console.log('hahahahah');
+  return res.redirect(303,'/archieve');
+  /*if(req.xhr)
+    return res.send({success:true});
+  return res.redirect(303,'/archieve');*/
+
+});
+
+
 
 app.post('/registerHandler',function(req,res){
     if(req.xhr){
-      return res.json({success:true});
+      res.send({success:true});
+      //发送一个数据请求
     } 
     req.session.flash = {
       type: 'success',
       intro: 'Thank you!',
       message: 'You have now been signed up for the newsletter.',
     };
-    //res.end();
   return res.redirect(303, '/archieve');
 });
 
 
 app.get('/archieve',function(req,res){
   //渲染页面
+  console.log('archieve');
   res.render('archieve');
-  res.end();
 });
 
 app.get('/shoppingcar',function(req,res){
