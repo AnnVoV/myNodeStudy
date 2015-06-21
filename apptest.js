@@ -61,20 +61,13 @@ app.get('/register',function(req,res){
 });
 
 app.post('/registerHandler',function(req,res){
- // if(req.xhr) return res.json({success:true});//为什么如果不先写这句就跳转不了页面
     if(req.xhr) res.json({success:true});
     req.session.flash = {
       type: 'success',
       intro: 'Thank you!',
       message: 'You have now been signed up for the newsletter.',
     };
-    /*res.locals.flash = {
-      type: 'success',
-      intro: 'Thank you!',
-      message: 'You have now been signed up for the newsletter.'
-    };//全局数据*///不能这样写，因为页面跳转时数据都没了，要先存储在session里面？
   return res.redirect(303, '/archieve');
-  //注意跳转页面的这里要写return
 });
 
 app.get('/archieve',function(req,res){

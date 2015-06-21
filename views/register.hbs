@@ -39,7 +39,9 @@
         .done(successFunction)
         .fail(errorFunction);
 
-      function successFunction(){
+      //为什么这个回调函数没有执行
+      function successFunction(data){
+        
         console.log('ajax data success....');
       }
       function errorFunction(){
@@ -61,7 +63,8 @@
       },
       ajaxRequest:function(){
         //提交数据是不是只有post才能跳转页面啊？？
-        var promise = $.ajax(
+        //感觉这一段并没有起作用
+        /*var promise = $.ajax(
           {
             url:'/registerHandler',
             data:model.data,
@@ -69,15 +72,33 @@
           }
         );
 
-        promise.done(successFunc);
-        promise.fail(errorFunc);
+        promise
+          .done(successFunc)
+          .fail(errorFunc);
 
-        var successFunc = function(){
+        var successFunc = function(data){
+          alert(data);
           console.log('success');
         };
         var errorFunc = function(){
           console.log('error');
-        };
+        };*/
+
+        $.ajax(
+          {
+            url:'/registerHandler',
+            data:model.data,
+            type:'post',
+            success:function(){
+              console.log('success....');
+            },
+            error:function(){
+              console.log('error....');
+            }
+          }
+        );
+
+
       }
     };
 
