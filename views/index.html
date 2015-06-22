@@ -21,7 +21,11 @@
         float:left;
       }
 
+      .m-margin-top {
+        margin-top:50px;
+      }
   </style>
+  <script src="js/jquery-1.11.2.js" type="text/javascript"></script>
 </head>
 <body>
   <div class="m-wrapper">
@@ -29,7 +33,7 @@
       <img src="/img/logo.png" class="m-logo"/>
       <h1>Welcome to Ann's Plan Travel</h1>
     </div>
-    <div class="m-content">
+    <div class="m-content m-margin-top">
       <table class="table table-striped">
         <tr>
           <td>Place</td>
@@ -40,25 +44,70 @@
         </tr>
         {{#placeList}}
           <tr>
-            <td><span name="place">{{place}}</span></td>
+            <td><span name="place" class="j-place">{{place}}</span></td>
             <td><span name="price">{{price}}</span></td>
             <td><input type="number" min="{{../minSize}}" max="{{../maxSize}}" name="size" value="{{../minSize}}"/></td>
             <td>
-              <!-- 条件判断语句ifEqual -->
-              {{#ifEqual status '==' 'cloudy'}}
-                多云
-              {{/ifEqual}}
+                {{#ifEqual status '==' 'cloudy'}}
+                  多云
+                {{/ifEqual}}
+                {{#ifEqual status '==' 'sunny'}}
+                  晴朗
+                {{/ifEqual}}
+                {{#ifEqual status '==' 'rainy'}}
+                  小雨
+                {{/ifEqual}}
             </td>
             <td>
-              <button class="btn btn-primary">order</button>
-              <button class="btn btn-danger">cancel</button>
+              <button class="btn btn-success j-detail">detail</button>
+              <button class="btn btn-primary j-order">order</button>
+              <button class="btn btn-danger j-cancel">cancel</button>
             </td>
           </tr>
         {{/placeList}}
       </table>
     </div>
-    <div class="m-footer">
+    <hr class="m-margin-top">
+    <div>
+      <p>©Ann's Design Company.</p>
     </div>
   </div>
+  <script>
+    $(function(){
+      var jqDom ={
+        detail:$('.j-detail')
+      };
+
+      var controller = {
+        initial:function(){
+          this.bindEvents();
+        },
+        bindEvents:function(){
+          jqDom.detail.on('click',function(){
+            var $pointer = $(this),
+                $row = $pointer.parent().parent(),
+                place = $row.find('.j-place').html();
+
+            window.location.href = '/tourPlace/'+place;
+          });
+        }
+      };
+
+      var view = {
+
+      };
+
+      var model = {
+
+      };
+
+      var main = function(){
+        controller.initial();
+      };
+
+      main();
+
+    });
+  </script>
 </body>
 </html>

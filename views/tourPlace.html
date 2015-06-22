@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>景点页面</title>
+  <style>
+    .m-intro {
+      color:rgb(66, 139, 202);
+    }
+  </style>
+</head>
+<body>
+  <h1>{{title}}</h1>
+  <h3>{{subtitle}}</h3>
+  <!-- 天气图标列表 -->
+  {{#ifEqual status '==' 'cloudy'}}
+    <img src="/img/cloudy.gif"/>
+    <span class="m-intro">{{intro}}</span>
+  {{/ifEqual}}
+  {{#ifEqual status '==' 'sunny'}}
+    <img src="/img/sunny.gif"/>
+    <span class="m-intro">{{intro}}</span>
+  {{/ifEqual}}
+  {{#ifEqual status '==' 'rainy'}}
+    <img src="/img/rainy.gif"/>
+    <span class="m-intro">{{intro}}</span>
+  {{/ifEqual}}
+  <hr>
+  <footer>
+    <p>© Ann's Design 2015</p>
+  </footer>
+</body>
+</html>
