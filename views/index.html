@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>this is homepage</title>
+  <link href="vendor/bootstrap/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet">
+  <link href="vendor/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">  
+  <style>
+      .m-wrapper {
+        width:980px;
+        margin:0px auto;
+      }
+
+      .m-header h1 {
+        margin:0 0 0 50px;
+        height:186px;
+        line-height:300px;
+      }
+      
+      .m-logo {
+        float:left;
+      }
+
+  </style>
+</head>
+<body>
+  <div class="m-wrapper">
+    <div class="m-header">
+      <img src="/img/logo.png" class="m-logo"/>
+      <h1>Welcome to Ann's Plan Travel</h1>
+    </div>
+    <div class="m-content">
+      <table class="table table-striped">
+        <tr>
+          <td>Place</td>
+          <td>Price</td>
+          <td>Size</td>
+          <td>Weather</td>
+          <td>Status</td>
+        </tr>
+        {{#placeList}}
+          <tr>
+            <td><span name="place">{{place}}</span></td>
+            <td><span name="price">{{price}}</span></td>
+            <td><input type="number" min="{{../minSize}}" max="{{../maxSize}}" name="size" value="{{../minSize}}"/></td>
+            <td>
+              <!-- 条件判断语句ifEqual -->
+              {{#ifEqual status '==' 'cloudy'}}
+                多云
+              {{/ifEqual}}
+            </td>
+            <td>
+              <button class="btn btn-primary">order</button>
+              <button class="btn btn-danger">cancel</button>
+            </td>
+          </tr>
+        {{/placeList}}
+      </table>
+    </div>
+    <div class="m-footer">
+    </div>
+  </div>
+</body>
+</html>

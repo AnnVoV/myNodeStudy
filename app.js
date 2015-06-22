@@ -1,67 +1,73 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+//express-handlebars 模块
 var exphbs = require('express3-handlebars');
-var data = require('./tourist');
-var credentials = require('./credentials');
-var model = {orderList:[]};//数据集合
-var controller = {
-  getData:function(){
-    return model.orderList;
-    //返回数据数组
-  },
-  setData:function(data){
-    model.orderList.push(data);
-  },
-  delData:function(){
+var app = express();
+//相关的数据配置
+var data = require('./data');
 
-  }
+//静态文件访问
+app.use(express.static(__dirname+'/public'));
+app.set('env','development');
+
+//设置模板引擎的后缀名为html
+app.set('view engine','html');
+app.engine('html',  exphbs(
+    {
+      defaultlayout:false,
+      //设置默认的扩展名
+      extname:'.html',
+      helpers:{
+        ifEqual:function(v1,operator,v2,options){
+          switch(operator){
+            //自定义helper模块 这样我们可以通过 {{#ifEqial v1 '==' v2}}来使用
+            case '==':{
+              return (v1 == v2) ? options.fn(this) : options.inverse(this);
+              break;
+            }
+            //自定义helper模块 这样我们可以通过 {{#ifEqial v1 '===' v2}}来使用
+            case '===':{
+              return (v1 == v2) ? options.fn(this) : options.inverse(this);
+              break;
+            }
+          }
+        }
+      }
+    }
+));
+
+// 开启日志 相关的日志处理配置
+switch(app.get('env')){
+    case 'development':
+      // compact, colorful dev logging
+      app.use(require('morgan')('dev'));
+        break;
+    case 'production':
+        // module 'express-logger' supports daily log rotation
+        app.use(require('express-logger')({ path: __dirname + '/log/requests.log'}));
+        break;
 }
 
-app = express();
-app.use(require('cookie-parser')(credentials.cookieSecret));
-app.use(require('express-session')());
-//必须要先引入这个cookie-parser 才能使用express-session模块
-//再使用session 
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(express.static(__dirname+'/public'));
+//路由的相关处理操作
+app.get('/',function(req,res){
+  var touristArr = data.getPlaceList();
+  res.locals.minSize = 1;
+  res.locals.maxSize = 50;
+  res.render('index.html');
+  res.render('index.html',{placeList:touristArr});
+  //我们可以通过设置data参数的方式，也可以使用通过res.locals注入的方式
+});
 
-
-app.engine('hbs', exphbs({
-  defaultLayout: 'main',
-  extname: '.hbs'
-}));
-app.set('view engine','hbs');
-
-app.use(function(req,res,next){
-  if(req.session){
-    console.log('first use middleware: ',req.session.orderList);
-  }
+function specials(req,res,next){
+  //从数据库中获取优惠码
+  res.locals.speicals = getSpecialsFromDataBase();
   next();
+}
+
+app.get('/page-with-specials',specials,function(){
+  
 });
 
-app.get('/register',function(req,res){
-  res.render('register',data.getPlaces());
-});
 
-app.post('/registerHandler',function(req,res){
-  if(req.xhr){
-    var location = req.body['location'],
-        size = req.body['size']-'',
-        price = req.body['price']-'',
-        totalAmount = price*size;
-    controller.setData({location:location,price:totalAmount});
-    req.session.orderList = controller.getData();
-    //设置app.locals.orderList的值
-    return res.json({success:true});
-  }
-  //跳转到orderList页面
-  return res.redirect(303,'/orderList');
-});
-
-//订单列表页
-app.get('/orderList',function(req,res){
-  //注意：carList 应该是一个数组，
-  res.render('shoppingcars',{orderList:req.session.orderList});
-});
-
+//开启端口
 app.listen(8088);
