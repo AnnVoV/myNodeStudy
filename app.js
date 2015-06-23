@@ -2,9 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 //express-handlebars 模块
 var exphbs = require('express3-handlebars');
+//引入文件模块
+var fs = require('fs');
 var app = express();
 //相关的数据配置
 var data = require('./data');
+var autoViews = {};
+
 
 //静态文件访问
 app.use(express.static(__dirname+'/public'));
@@ -93,6 +97,20 @@ app.get('/tourPlace/:place',function(req,res,next){
   next();
 },view.showDetailView);
 
+
+app.use(function(req,res,next){
+  var path = req.path.toLowerCase();
+  if(autoViews[path]){
+    return res.render(autoViews[path]);
+  }
+  if(fs.existsSync(__dirname+'/views/'+path+'.html')){
+    autoViews[path] = path.replace(/^\//,'');
+    //如果文件存在的话
+    //说明render 后面的文件名不一定要加上后缀的
+    return res.render(autoViews[path]);
+  };
+  next();
+});
 
 //最后一个处理路由,任何一个url都没有匹配
 app.use(function(req,res){
