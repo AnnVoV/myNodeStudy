@@ -98,6 +98,8 @@ app.get('/tourPlace/:place',function(req,res,next){
 },view.showDetailView);
 
 
+//自动化渲染页面视图
+//这种方式一般用于针对：静态页面，这样可以避免我们需要去为静态页面配置路由，并且渲染页面
 app.use(function(req,res,next){
   var path = req.path.toLowerCase();
   if(autoViews[path]){
