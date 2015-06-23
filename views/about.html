@@ -21,6 +21,14 @@
       .m-margin-top {
         margin-top:50px;
       }
+
+      form div {
+        margin :10px;
+      }
+
+      form input[type="text"],input[type="email"] {
+        margin-left:5px;
+      }
   </style>
 </head>
 <body>
@@ -38,7 +46,18 @@
         {{/tourlist}}
       </ul>
     </div>
-    <div class="m-content m-margin-top">
+    <div class="m-margin-top">
+      <form name="form" action="/about" method="post">
+        <div>
+          name:<input type="text" name="name"/>
+        </div>
+        <div>
+          email:<input type="email" name="email"/>
+        </div>
+        <div>
+          <input type="submit" value="send"/>
+        </div>
+      </form>
     </div>
     <hr class="m-margin-top m-hr-line">
     <div class="m-footer">
