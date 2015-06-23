@@ -3,8 +3,8 @@ var express = require('express');
 var exphbs = require('express3-handlebars');
 var bodyParser = require('body-parser');
 var app = express();
-var routes = require('./routes');
-
+var routes = require('./routeshandler');
+//routeshandler将路由按照功能进行分块
 
 app.set('view engine','html');
 app.engine('html',exphbs(
