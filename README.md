@@ -51,9 +51,17 @@ handlers/main.js中放首页处理器、/about处理器，以及所有不属于�
         var touristList = data.getTouristList();
         res.render('about.html',{tourlist:touristList});
     };
-    
-````
 
+使用app.route 去组织路由的处理：  
+app.route('/about')
+    .get(function(req,res,next){
+        //XXX处理
+    })
+    .post(function(req,res){
+        //XXX处理
+    }); 
+````
+这样写的路由很清楚并且简洁，[参考文章](http://javascript.ruanyifeng.com/nodejs/express.html#)
   
      
 
