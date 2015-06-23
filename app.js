@@ -88,7 +88,8 @@ app.get('/tourPlace/:place',function(req,res,next){
 },view.showDetailView);
 
 //最后一个处理路由,任何一个url都没有匹配
-app.get('/',function(req,res){
+app.use(function(req,res){
+  conso
   res.render('404.html');
 });
 
