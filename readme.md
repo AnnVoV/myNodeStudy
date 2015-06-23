@@ -2,7 +2,8 @@
   [(1)gulp-seajs-combo插件的使帮助我们合并seajs文件](https://github.com/AnnVoV/myNodeStudy/tree/seajs)  
   [(2)seajs with handlebars 的使用](https://github.com/AnnVoV/myNodeStudy/tree/seajsHbs)  
   [(3)表单提交之文件上传的学习](https://github.com/AnnVoV/myNodeStudy/tree/formHandler)  
-  [(4)cookie与session的学习](https://github.com/AnnVoV/myNodeStudy/tree/cookieSession)
+  [(4)cookie与session的学习](https://github.com/AnnVoV/myNodeStudy/tree/cookieSession)  
+  [(5)routes的相关学习](https://github.com/AnnVoV/myNodeStudy/tree/routes)  
 
 ## 2.前端脚本写法学习  
 #### 学习qin 同学的写法 非常棒 主要也运用MVC的思想
