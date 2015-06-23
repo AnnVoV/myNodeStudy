@@ -114,7 +114,7 @@ app.use(function(req,res,next){
 
 //最后一个处理路由,任何一个url都没有匹配
 app.use(function(req,res){
-  conso
+  console.log('未找到对应文件');
   res.render('404.html');
 });
 
