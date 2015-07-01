@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>test title</title>
+  <!-- 加载Traceur编译器 -->
+  <!--<script src="http://google.github.io/traceur-compiler/bin/traceur.js"
+          type="text/javascript"></script>-->
+  <!-- 将Traceur编译器用于网页 -->
+  <!--<script src="http://google.github.io/traceur-compiler/src/bootstrap.js"
+          type="text/javascript"></script>-->
+  <script src="../js/comm/traceur.js"></script>
+  <script src="../js/comm/bootstrap.js"></script>
+  <style>
+    input[type="button"]{
+      margin:20px 0px 0px 10px;
+    }
+  </style>
+</head>
+<body>
+  <input type="button" id="start" value="click me 倒计时30s"/>
+  <input type="button" id="pause" value="暂停"/>
+  <input type="button" id="resume" value="恢复"/>
+  <input type="button" id="restart" value="重启"/>
+  <script type="module">
+    //全局变量控制
+    var global = {
+      isPause:false,
+      count:30,
+      interval:null,
+      myPauseGen:null
+    };
+
+    //dom 元素集合
+    var dom = {
+      start:document.getElementById('start'),
+      pause:document.getElementById('pause'),
+      resume:document.getElementById('resume'),
+      restart:document.getElementById('restart')
+    };
+
+    //控制器
+    var controller = {
+      initial(){
+        dom.start.onclick = function(){
+          controller.setBtnDisable(dom.start);
+          global.interval = setInterval(function(){
+            global.myPauseGen.next();
+          },1000);
+        };
+
+        dom.pause.onclick = function(){
+          controller.setPause();
+        };
+
+        dom.resume.onclick = function(){
+          controller.setResume();
+        };
+
+        dom.restart.onclick = function(){
+          controller.setRestart();
+        }
+
+        //初始化时设置恢复按钮不可点击
+        controller.setBtnDisable(dom.resume);
+      },
+      pauseGen:function* (){
+        //迭代器
+        while(global.count>=0){
+          dom.start.value = '倒计时'+global.count+'s';
+          if(!global.isPause){
+            yield --global.count;
+          }
+          if(global.isPause){
+            yield controller.setPause();
+          }
+        } 
+        //如果global.count<0 给出提示
+        console.log(global.count);
+        controller.endTip();
+      },
+      setPause(){
+        console.log('暂停....');
+        controller.setBtnEnable(dom.resume);
+        global.isPause  = true;
+        clearInterval(global.interval);
+      },
+      setResume(){
+        console.log('恢复...');
+        global.isPause = false;
+        global.interval = setInterval(function(){
+          global.myPauseGen.next();
+        },1000);
+      },
+      setRestart(){
+        global.count = 30;
+      },
+      endTip(){
+        //如果已经到0s了给出提示
+        if(global.count < 0){
+          alert('已经结束，请重启!');
+          controller.setBtnEnable(dom.start);
+        }
+      },
+      setBtnEnable(btn){
+        //设置btn可再点
+        btn.removeAttribute('disabled');
+      },
+      setBtnDisable(btn){
+        //设置btn不可再点
+        btn.setAttribute('disabled',true);
+      }
+    };
+
+    //主函数
+    var main = function(){
+      global.myPauseGen = new controller.pauseGen();
+      global.myPauseGen.next();
+      controller.initial();
+    };
+    //调用主函数
+    main();
+  </script>
+</body>
+</html>
