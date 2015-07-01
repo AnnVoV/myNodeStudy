@@ -5,6 +5,10 @@
   [(4)cookie与session的学习](https://github.com/AnnVoV/myNodeStudy/tree/cookieSession)  
   [(5)routes的相关学习](https://github.com/AnnVoV/myNodeStudy/tree/routes)  
 
+##ps.补充ES6 的相关学习内容
+  [(1)generator函数 内部遍历器](https://github.com/AnnVoV/myNodeStudy/blob/ES6/html/countDown.html)
+
+
 ## 2.前端脚本写法学习  
 #### 学习qin 同学的写法 非常棒 主要也运用MVC的思想
 #### demo:
