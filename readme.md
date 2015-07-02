@@ -28,6 +28,7 @@
 #### 一定要注意:生成Promise 对象不能通过new来实例化  
 #### 有两种方式:  
 #### A.var promise = Promise.resolve();  
-#### B.var promise = function(resolve,reject){}   
-
-
+#### B.var promise = function(resolve,reject){}  
+（1）[promise chain 学习](https://github.com/AnnVoV/myNodeStudy/blob/ES6/html/promiseStudy.html)  
+ (2)[promise chain 中传递参数](https://github.com/AnnVoV/myNodeStudy/blob/ES6/html/promisePassingValue.html)    
+ promise 中实现参数的传递，主要是通过return 返回值作为下一个链式的参数传递的     
