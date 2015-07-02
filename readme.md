@@ -6,9 +6,14 @@
   [(5)routes的相关学习](https://github.com/AnnVoV/myNodeStudy/tree/routes)  
 
 ##ps.补充ES6 的相关学习内容
-  [(1)generator函数 内部遍历器](https://github.com/AnnVoV/myNodeStudy/blob/ES6/html/countDown.html)
-
-
+  [(1)generator函数 内部遍历器](https://github.com/AnnVoV/myNodeStudy/blob/ES6/html/countDown.html)  
+  [(2)promise对象](https://github.com/AnnVoV/myNodeStudy/blob/ES6/html/promiseStudy.html)    
+    关于promise对象的学习，值得参考的文章:    
+    [(2.1)张鑫旭的博文](http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/)  
+    [(2.2)关于promise的github书](http://liubin.github.io/promises-book/#chapter2-how-to-write-promise)    
+    [(2.3)ajax数据时promise的应用 参考文章](http://www.infoq.com/cn/news/2011/09/js-promise) 
+  
+  
 ## 2.前端脚本写法学习  
 #### 学习qin 同学的写法 非常棒 主要也运用MVC的思想
 #### demo:
