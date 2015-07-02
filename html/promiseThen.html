@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Promise#then每次返回的是不同的实例对象</title>
+  <script src="../js/comm/traceur.js"></script>
+  <script src="../js/comm/bootstrap.js"></script>
+</head>
+<body>
+  <div>通过promise#then 返回的对象不是同一个对象</div>
+  <br>
+  <div id="container"></div>
+  <script type="module">
+  //-----------------第一种方式------------------------
+    var aPromise = new Promise(function(resolve){
+      resolve(100);
+    });
+
+    var dom = {
+      container:document.getElementById('container')
+    };
+
+    //这种写法是极力禁止的，这里的aPromise.then基本上相当于同时进行调用的
+    //所以每一句话传递进去的value参数都是100
+    //所以返回值是100
+    aPromise.then((value)=>value*2);
+    aPromise.then((value)=>value*2);
+    aPromise.then((value)=>{
+      var textNode = document.createTextNode('result1:'+value);
+      var brNode = document.createElement('br');
+      dom.container.appendChild(textNode);
+      dom.container.appendChild(brNode);
+      
+    });
+
+    //-----------------第二种方式------------------------
+    var bPromise = new Promise(function(resolve){
+      resolve(100);
+    });
+    bPromise
+      .then((value)=>value*2)
+      .then((value)=>value*2)
+      .then((value)=>{
+        var textNode = document.createTextNode('result2:'+value);
+        dom.container.appendChild(textNode);
+        console.log('result2:',value);
+      });
+
+  </script>
+</body>
+</html>
