@@ -1,0 +1,107 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>promise 学习</title>
+  <script src="../js/comm/traceur.js"></script>
+  <script src="../js/comm/bootstrap.js"></script>
+</head>
+<body>
+  <div>  1.执行任务链 taskA ——> 2.执行任务链 taskB ——> 3.执行任务链 finalTask  </div>
+  <div>  1.如果执行任务链taskA遇到错误 ——> 调用onRejected方法 (不会执行taskB)</div>
+  <div>  1.执行任务链taskA ——> 执行任务链taskB遇到错误 ——> 调用onRejected方法  </div>
+  <br>
+  <br>
+  <div> ----------------  执行结果 ------------------------</div>
+  <br>
+  <br>
+  <script type="module">
+    'use strict';
+    /* 一定要注意:Promise 不可以通过new 进行实例化 */
+    //Promise.resolve(value)
+    //returns a Promise Object that resolved with a given value
+    var promise_success = Promise.resolve();
+    var promise_error_A = Promise.resolve();
+    var promise_error_B = Promise.resolve();
+
+
+    var createTextNode = function(param){
+      var span = document.createElement('span');
+      span.appendChild(document.createTextNode(param));
+      document.body.appendChild(span);
+    }
+
+    function taskA(){
+      createTextNode('testNode');
+    }
+
+    function error_taskA(){
+      createTextNode('执行taskA出错->');
+      throw new Error('new error from TaskA');
+    }
+
+    function taskB(){
+      createTextNode('执行taskB->');
+    }
+
+    function error_taskB(){
+      createTextNode('执行taskB出错->');
+      throw new Error('new error from taskB');
+    }
+
+    function finalTask(){
+      createTextNode('执行finalTask');
+    }
+
+    function onRejected(error){
+      createTextNode(error);
+      console.log(error);
+    }
+
+    function createBr(){
+      var br = document.createElement('br');
+      document.body.appendChild(br);
+    }
+
+    /* taskA -> taskB -> finalTask  */
+    promise_success
+      .then(taskA)
+      .then(taskB)
+      .catch(onRejected)
+      .then(finalTask)
+      .then(createBr);
+
+    setTimeout(function(){
+      promise_error_A
+        .then(error_taskA)
+        .then(taskB)
+        .catch(onRejected)
+        .then(finalTask)
+        .then(createBr);
+    },2000);
+    
+
+    /* taskA执行出错 -> onReject 不执行taskB与finalTask  */
+    setTimeout(function(){
+      promise_error_A
+        .then(error_taskA)
+        .then(taskB)
+        .catch(onRejected)
+        .then(finalTask)
+        .then(createBr);
+    },2500);
+    
+
+    /* taskA -> taskB执行出错 -> onReject 不执行finalTask */
+    setTimeout(function(){
+      promise_error_B
+        .then(taskA)
+        .then(error_taskB)
+        .catch(onRejected)
+        .then(finalTask)
+        .then(createBr);
+    },2700);  
+  </script>
+
+</body>
+</html>
