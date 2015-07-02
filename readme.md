@@ -1,3 +1,33 @@
 ##promise 的相关学习  
 [值得参考的书](http://liubin.github.io/promises-book/#__2) 
-![img](img/promisePic.png)
+![img](img/promisePic.png)  
+####注意上面的图与下面的代码  
+````
+  function taskA() {
+    console.log("Task A");
+    throw new Error("throw Error @ Task A")
+  }
+  function taskB() {
+      console.log("Task B");// 不会被调用
+  }
+  function onRejected(error) {
+      console.log(error);// => "throw Error @ Task A"
+  }
+  function finalTask() {
+      console.log("Final Task");
+  }
+
+  var promise = Promise.resolve();
+  promise
+      .then(taskA)
+      .then(taskB)
+      .catch(onRejected)
+      .then(finalTask);
+
+````  
+#### 一定要注意:生成Promise 对象不能通过new来实例化  
+#### 有两种方式:  
+#### A.var promise = Promise.resolve();  
+#### B.var promise = function(resolve,reject){}   
+
+
