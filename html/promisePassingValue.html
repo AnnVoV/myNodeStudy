@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>promise passing value</title>
+  <script src="../js/comm/traceur.js"></script>
+  <script src="../js/comm/bootstrap.js"></script>
+</head>
+<body>
+  <div>promise chain 中传递参数</div>
+  <div>promiseStudy.html 中的例子Task都是相互独立的，只是简单调用</div>
+  <div>如果此时，taskA想给taskB传递一个参数怎么办?</div>
+  <div>要传递的参数就是在return 里的返回值</div>
+  <script type="module">
+    /* 参数通过return 返回值进行传递  */
+    /* 尝试使用箭头函数 */
+    var doubleUp = (value)=>value*2,
+        increment = (value)=>value+1,
+        output = (value)=>{
+          console.log(value);
+          var textNode = document.createTextNode('result:'+value);
+          document.body.appendChild(textNode);
+        },
+        promise = Promise.resolve(1);
+
+    promise
+        .then(increment)//2
+        .then(doubleUp)//4
+        .then(output)//4
+        .catch(function(error){
+            // promise chain中出现异常的时候会被调用
+            console.error(error);
+        });
+  </script>
+</body>
+</html>
