@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajax Common With ES6</title>
+  <script src="../js/comm/traceur.js"></script>
+  <script src="../js/comm/bootstrap.js"></script>
+</head>
+<body>
+  <div>尝试使用ES6写</div>
+  <div>------------</div>
+  <div id="container"></div>
+  <script type="module">
+    'use strict';
+    //dom 集合
+    var dom = {
+      container:document.getElementById('container')
+    };
+
+    //ajax 数据请求
+    var ajaxHandler = (url,callback)=>{
+      var req = new XMLHttpRequest();
+      req.open('GET',url,true);
+      req.onload=()=>{
+        if(req.status === 200){
+          callback(null,req.responseText);
+        }else{
+          callback(new Error(req.status),req.status);
+        }
+      };
+      req.onerror=()=>{
+        console.log('请求数据出错....');
+      };
+      req.send();
+    };
+
+    //普通的CommonCallBack类
+    class CommonCallBack{
+      handler(callback,err,data){
+        console.log('调用handler 方法......');
+        if(err){
+          //console.log('出错,错误为:',err);
+          callback(err,data);
+        }else{
+          //进行相关的处理
+          callback(null,data);
+        }
+      }
+    };
+
+    //CommonCallBack类的实例
+    var commonCallBack = new CommonCallBack();
+
+    //修改了commonCallBack的handler类
+    commonCallBack.handler = (err,data)=>{
+      if(err){
+        console.log('发生了错误，进行相关错误处理....');
+      }else{
+        console.log('进行相关的数据处理');
+        var container = dom.container,
+            json_data = JSON.parse(data);
+        for(var key in json_data){
+          var textNode = document.createTextNode(key+':'+json_data[key]),
+              brNode = document.createElement('br');
+          container.appendChild(textNode);
+          container.appendChild(brNode);
+        }
+      }
+    };
+
+    //request ajax类的集合
+    var request = {
+      comment(url,callback){
+        ajaxHandler(url,callback);
+      }
+    }
+
+    //主函数
+    var main = ()=>{
+      request.comment('/mockData1',commonCallBack.handler);
+    }
+
+    main();
+  </script>
+</body>
+</html>
