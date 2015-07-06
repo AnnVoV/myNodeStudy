@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <div>模拟Ajax 请求的比较好的写法</div>
+  <div>------------------------</div>
+  <div id="m_dataContent"></div>
+</head>
+<body>
+  <!-- 普通的多个ajax 请求的写法 20150706 -->
+  <script>
+    var dom = {
+      container:document.getElementById('m_dataContent')
+    };
+
+    var ajaxHandler = function(url,callback){
+      var xml = new XMLHttpRequest();
+      xml.open('GET',url,true);      
+      xml.onload = function(){
+        if(this.status === 200){
+          callback(null,this.responseText);
+        }else{
+          callback('error',this.status);
+        }
+      };
+      xml.onerror = function(error){
+        console.log('请求数据失败....');
+        callback(error,this.statusText);
+      };
+      xml.send();
+    };
+
+    var callBackHandler = function(trueHandler,error,data){
+      if(error){
+        console.log('请求数据出错!');
+        console.log('出错数据:',data);
+      }else{
+        console.log('进入这里真正的处理数据....');
+        trueHandler(null,data);
+      }
+    };
+
+    var request = {
+      mockData1:function(){
+        ajaxHandler('/mockData1',callBackHandler.bind(null,function(err,data){
+          trueHandler.handler1(data);
+        }));
+      },
+      mockData2:function(){
+        ajaxHandler('/mockData2',callBackHandler.bind(null,function(err,data){
+          trueHandler.handler2(data);
+        }));
+      },
+      mockDataError:function(){
+        ajaxHandler('/mockData3',callBackHandler.bind(null,function(err,data){
+          trueHandler.handler2(data);
+        }));
+      }
+    };
+
+    var trueHandler = {
+      handler1:function(data){
+        console.log('数据处理1.....');
+        var data = JSON.parse(data),
+            container = dom.container,
+            result = '';
+        
+        console.log('data:',data);
+        for(var key in data){
+          var dataLine = key+':'+data[key]+'<br/>';
+          result+=dataLine;
+        }
+        container.innerHTML = result;
+      },
+      handler2:function(data){
+        console.log('数据处理2.....');
+        var container = dom.container,
+            lineNode = document.createTextNode('-----------------'),
+            textNode = null;
+        
+        brNode = document.createElement('br');
+        textNode = document.createTextNode(data);
+        container.appendChild(lineNode);
+        container.appendChild(brNode);
+        container.appendChild(textNode);
+      }
+    };
+
+    //入口函数
+    var main = function(){
+      request.mockData1();
+      request.mockData2();
+      request.mockDataError();
+    };
+    //主函数
+    main();
+  </script>
+</body>
+</html>
