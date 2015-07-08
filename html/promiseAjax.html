@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>promise ajax 请求</title>
+  <script src="../js/comm/traceur.js"></script>
+  <script src="../js/comm/bootstrap.js"></script>
+</head>
+<body>
+  <script type="module">
+    'use strict';
+    function getURL(URL) {
+      return new Promise(function (resolve, reject) {
+          var req = new XMLHttpRequest();
+          req.open('GET', URL, true);
+          req.onload = function () {
+              if (req.status === 200) {
+                  resolve(req.responseText);
+              } else {
+                  reject(new Error(req.statusText));
+              }
+          };
+          req.onerror = function () {
+              reject(new Error(req.statusText));
+          };
+          req.send();
+      });
+    }
+    var request = {
+        comment: function getComment() {
+          return getURL('/mockData1').then(JSON.parse);
+        },
+        people: function getPeople() {
+          return getURL('/mockData2').then(JSON.parse);
+        }
+    };
+    function main() {
+
+      function recordValue(results, value) {
+          results.push(value);
+          return results;
+      }
+      // [] 用来保存初始化的值
+      var pushValue = recordValue.bind(null,[]);
+      console.log(pushValue);
+
+      return request.comment().then(pushValue).then(request.people).then(pushValue);
+      //先请求mockData1 把value 存储下来
+      //再请求mockData2 把value 存储下来
+      //最后再把数据全部处理
+    }
+    // 运行的例子
+    main().then(function (value) {
+      console.log('进入处理主函数');
+      console.log(value);
+    }).catch(function(error){
+      console.log('发生了错误');
+      console.error(error);
+    });
+  </script>
+</body>
+</html>
