@@ -15,6 +15,7 @@ var testMethod = function(data){
   };
 };
 
+app.use(logger(':method:url'));
 app.use(testMethod(1));
 
 app.use(function* (next){
@@ -36,7 +37,21 @@ function* theLastGen(){
   console.log('--------- last 中间件 -------');
 }
 
-app.listen(8088);
+function logger(format){
+  return function* (next){
+    var str = format
+      .replace('method',this.method)
+      .replace('url',this.url);
+
+    console.log('format str:',str);
+    yield next;
+  }
+}
+
+
+
+
+app.listen(8089);
 
 //注意：在Koa框架中，我们要使用app.use 默认的参数必须为next
 //所以如果我们使用了自定义的函数我们必须自己返回一个generator函数
