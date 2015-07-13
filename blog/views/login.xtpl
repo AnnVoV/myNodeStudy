@@ -18,10 +18,10 @@
   <h1>Welcome to home page!</h1>
   <form action="/loginHandle" method="post" name="loginForm">
     <div>
-      <span class="label">name:</span><input type="text" name="name" placeholder="请输入您的姓名"/>
+      <span class="label">name:</span><input type="text" name="name" placeholder="请输入您的姓名" value="{{cookieData.name}}"/>
     </div>
     <div>
-      <span class="label">pass:</span><input type="password" name="pass" placeholder="请输入您的密码"/>
+      <span class="label">pass:</span><input type="password" name="pass" placeholder="请输入您的密码" value="{{cookieData.pass}}"/>
     </div>
     <div>
       <input type="submit" value="登陆"/>
